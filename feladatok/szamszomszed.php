@@ -3,6 +3,7 @@
  * Fájl: feladatok/szamszomszed.php
  * Funkció: Számszomszéd keresési feladatok generálása.
  * Három oszlopos elrendezés: [Alsó Szomszéd] [Szám] [Felső Szomszéd]
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- BEMENETEK ---
@@ -149,5 +150,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
 
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 20. 10:07:00 */

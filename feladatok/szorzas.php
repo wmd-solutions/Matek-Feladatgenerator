@@ -2,6 +2,7 @@
 /*
  * Fájl: feladatok/szorzas.php
  * Funkció: Szorzás gyakorlása feladatok generálása és HTML kimenet előállítása.
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- HTML BEÁLLÍTÁSOK ---
@@ -82,5 +83,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     $html .= '</div>';
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 10. 18:39:00 */

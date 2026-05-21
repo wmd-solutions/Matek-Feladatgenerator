@@ -5,6 +5,7 @@
  * Beállítások: Tagok száma (3-6), Műveletek, Zárójelezés, Minden művelet kötelező.
  * Nehezített mód: Hiányzó tag keresése, triviális műveletek szűrése.
  * Könnyített mód: Kisebb számkör.
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- BEMENETEK ---
@@ -175,9 +176,6 @@ function generate_valid_task($tagok, $ops, $use_bracket, $limit, $force_all_ops,
         // --- TRIVIÁLIS MŰVELETEK SZŰRÉSE (NEHEZÍTETT MÓDBAN) ---
         if ($is_hard) {
             // Ellenőrizzük a stringet triviális esetekre
-            // Pl: " 1 ", "/ 1", "* 1", "- 0", "+ 0"
-            // De vigyázni kell a számjegyekkel (11 nem egyenlő 1-gyel).
-            // A space-ek miatt a " / 1 " minta jó lehet.
             if (strpos($expression_str, " / 1 ") !== false || 
                 strpos($expression_str, " * 1 ") !== false || 
                 strpos($expression_str, " - 0 ") !== false || 
@@ -245,29 +243,22 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     while (count($oldal_feladatai) < $feladatok_per_oldal) {
         
         // PARAMÉTEREK BEÁLLÍTÁSA A MÓDOK SZERINT
-        // Alapértelmezett (Alap mód): Normál számkör, nincs extra szűrés
         $aktualis_limit = $szamkor_hatar;
         $szigoru_szures = false;
         
         if ($szuper_konnyu) {
-            // Könnyített: Kis számok
-            $aktualis_limit = min($szamkor_hatar, 20); // Max 20, vagy ha a user kevesebbet adott meg
+            $aktualis_limit = min($szamkor_hatar, 20);
         }
         
         if ($nehezebb) {
-            // Nehezített: Szigorú szűrés (triviális műveletek tiltása)
             $szigoru_szures = true;
-            // Ha Könnyített ÉS Nehezített is aktív, akkor a limit marad kicsi (20), de a szűrés bekapcsol.
         }
 
         $task = generate_valid_task($am_tagok, $am_muveletek, $am_zarojelek, $aktualis_limit, $am_minden_muvelet, $szigoru_szures);
         
-        // MEGJELENÍTÉS LOGIKA
         $display_html = "";
         $correct_val = $task['result'];
         
-        // Ha "Nehezített" be van kapcsolva (akár önmagában, akár a könnyítettel együtt),
-        // akkor a feladat típusa "Hiányzó tag".
         if ($nehezebb) {
             preg_match_all('/([0-9]+)|([^0-9]+)/u', $task['str'], $matches, PREG_SET_ORDER);
             
@@ -294,8 +285,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
             $display_html .= " = <span class='fw-bold text-primary'>" . $task['result'] . "</span>";
             
         } else {
-            // Ha NINCS nehezített (tehát Alap vagy csak Könnyített),
-            // akkor az eredmény hiányzik.
             $display_html = $task['str'] . " = ";
             $display_html .= '<input type="number" class="answer-box mx-1" data-correct="' . $correct_val . '">';
         }
@@ -324,5 +313,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     $html .= '</div>';
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. február 10. 21:40:00 */

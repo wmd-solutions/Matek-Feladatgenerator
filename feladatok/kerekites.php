@@ -3,6 +3,7 @@
  * Fájl: feladatok/kerekites.php
  * Funkció: Kerekítési feladatok generálása.
  * Három oszlopos elrendezés: [Kerekített] [Eredeti Szám] [Kerekített]
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- BEMENETEK ---
@@ -47,7 +48,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     $html = '';
 
     // CSS beszúrása a placeholderek elrejtésére nyomtatáskor
-    // Csak az első oldalhoz fűzzük hozzá, hogy ne ismétlődjön feleslegesen minden oldalon
     if ($p === 0) {
         $html .= '
         <style>
@@ -72,16 +72,11 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     
     $html .= '<div class="row">';
     
-    // Generálunk 24 feladatot erre az oldalra
     $oldal_feladatai = [];
     while (count($oldal_feladatai) < $feladatok_per_oldal) {
         
-        // Szám generálása a számkörön belül
-        // Biztosítjuk, hogy legyen értelme kerekíteni (pl. ne legyen 0 vagy túl kicsi)
         $szam = random_int(5, $szamkor_hatar);
         
-        // Kerekítések kiszámítása
-        // PHP round() standard kerekítést használ
         $bal_ertek = round($szam / $kerekites_bal) * $kerekites_bal;
         $jobb_ertek = round($szam / $kerekites_jobb) * $kerekites_jobb;
 
@@ -92,7 +87,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
         ];
     }
 
-    // HTML renderelés: 2 hasáb
     $half = ceil(count($oldal_feladatai) / 2);
     $columns = array_chunk($oldal_feladatai, $half);
 
@@ -104,32 +98,24 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
             $html .= '<div class="problem-row d-flex align-items-center justify-content-center">';
             $html .= '<div class="problem d-flex align-items-center gap-3">';
             
-            // 1. Oszlop: Bal kerekítés (Input)
-            // Helykitöltő (placeholder) mutatja a kerekítés mértékét
             $html .= '<div class="text-center">';
             $html .= '<input type="number" class="answer-box" data-correct="' . $f['bal_ertek'] . '" placeholder="≈' . $kerekites_bal . '">';
             $html .= '</div>';
 
-            // 2. Oszlop: A szám (Középen, nyíllal vagy csak térközzel)
-            // Itt most egyszerűen a számot jelenítjük meg középen
             $html .= '<div class="fw-bold fs-4 text-primary text-center" style="min-width: 60px;">';
             $html .= $f['szam'];
             $html .= '</div>';
 
-            // 3. Oszlop: Jobb kerekítés (Input)
             $html .= '<div class="text-center">';
             $html .= '<input type="number" class="answer-box" data-correct="' . $f['jobb_ertek'] . '" placeholder="≈' . $kerekites_jobb . '">';
             $html .= '</div>';
             
             $html .= '</div></div>';
         }
-        $html .= '</div>'; // col-6 vége
+        $html .= '</div>'; 
     }
 
-    $html .= '</div>'; // row vége
+    $html .= '</div>'; 
 
-    // Hozzáadjuk a kész HTML-t a fő tömbhöz
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 10. 22:15:00 */

@@ -6,11 +6,11 @@
  * Feladattípusok: Relációk (<, >, =) és Műveletek (+, -).
  * Bővítve: Szuper könnyű mód és Javított Nehezített mód (Számkörhöz igazítva).
  * Módosítás: Nyomtatási margók optimalizálása hosszú feladatokhoz.
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- KONFIGURÁCIÓ ÉS BEMENETEK ---
 
-// Mértékegység típusok és egységeik (Váltószám az alapegységhez)
 $mertekegyseg_adatok = [
     'hossz' => [
         'nev' => 'Hosszúság',
@@ -45,18 +45,15 @@ $mertekegyseg_adatok = [
     ]
 ];
 
-// Feladattípusok
 $feladat_tipusok = [
     'vegyes' => 'Vegyes feladatok',
     'osszehasonlitas' => 'Összehasonlítás (<, >, =)',
     'muvelet' => 'Műveletek (+, -)'
 ];
 
-// Bemenetek kezelése
 $mertek_tipus = isset($_POST['mertek_tipus']) && array_key_exists($_POST['mertek_tipus'], $mertekegyseg_adatok) ? $_POST['mertek_tipus'] : 'hossz';
 $feladat_mod = isset($_POST['feladat_mod']) && array_key_exists($_POST['feladat_mod'], $feladat_tipusok) ? $_POST['feladat_mod'] : 'vegyes';
 
-// KIVÁLASZTOTT EGYSÉGEK KEZELÉSE (CHECKBOXOK)
 $kivalasztott_egysegek = [];
 if (isset($_POST['egysegek']) && is_array($_POST['egysegek'])) {
     foreach ($_POST['egysegek'] as $egyseg) {
@@ -69,7 +66,6 @@ if (empty($kivalasztott_egysegek)) {
     $kivalasztott_egysegek = array_keys($mertekegyseg_adatok[$mertek_tipus]['egysegek']);
 }
 
-// Szűkített egység lista a generáláshoz
 $aktiv_egysegek = [];
 foreach ($kivalasztott_egysegek as $egyseg) {
     $aktiv_egysegek[$egyseg] = $mertekegyseg_adatok[$mertek_tipus]['egysegek'][$egyseg];
@@ -141,9 +137,6 @@ $egyedi_beallitasok_html .= '</div>';
 
 // --- SEGÉDFÜGGVÉNYEK ---
 
-/**
- * Generál egy értéket úgy, hogy a LÁTHATÓ szám ne haladja meg a $max_ertek-et.
- */
 function general_elem($egysegek, $max_ertek, $fix_egyseg = null) {
     if ($fix_egyseg) {
         $egyseg = $fix_egyseg;
@@ -156,19 +149,15 @@ function general_elem($egysegek, $max_ertek, $fix_egyseg = null) {
 
     if ($max_ertek < 1) $max_ertek = 1;
     
-    // Véletlen szám generálása (ez maga a számjegy, pl. 100 [ml])
     $ertek = random_int(1, (int)$max_ertek);
     
     return [
         'ertek' => $ertek,
         'egyseg' => $egyseg,
-        'alap' => $ertek * $valto // Átváltva alapegységre a számításokhoz
+        'alap' => $ertek * $valto 
     ];
 }
 
-/**
- * Szűri a használható egységeket egy adott bázis egységhez (pl. 'ml') képest.
- */
 function szur_kompatibilis_egysegek($osszes_egyseg, $bazis_egyseg) {
     $kulcsok = array_keys($osszes_egyseg);
     $bazis_index = array_search($bazis_egyseg, $kulcsok);
@@ -189,34 +178,20 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     
     $html = '';
 
-    // MÓDOSÍTÁS: Nyomtatási stílusok injektálása az első oldalon
-    // Csökkentett margók és térközök a mértékegységes feladatokhoz
     if ($p === 0) {
         $html .= '
         <style>
             @media print {
-                /* Keskenyebb oldal margó */
-                @page { 
-                    margin: 1cm; 
-                }
-                
-                /* Konténer teljes szélessége */
+                @page { margin: 1cm; }
                 .container, .container-fluid {
                     width: 100% !important;
                     max-width: 100% !important;
                     padding-left: 0 !important;
                     padding-right: 0 !important;
                 }
-
-                /* Oszlopok közötti padding csökkentése (Bootstrap override) */
                 .col-6.pe-4 { padding-right: 5px !important; }
                 .col-6.ps-4 { padding-left: 5px !important; }
-                
-                /* Betűméret finomhangolása a hosszú sorokhoz */
-                .problem {
-                    font-size: 1rem !important; 
-                    /* white-space: nowrap; Ezt inkább levesszük, ha mégis törni kellene, de a kisebb margóval kifér */
-                }
+                .problem { font-size: 1rem !important; }
             }
         </style>';
     }
@@ -235,9 +210,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
             $aktualis_tipus = (random_int(0, 1) === 0) ? 'osszehasonlitas' : 'muvelet';
         }
 
-        // ----------------------------------------------------------------
-        // 1. SZUPER KÖNNYŰ MÓD
-        // ----------------------------------------------------------------
         if ($szuper_konnyu) {
             $kulcsok = array_keys($aktiv_egysegek);
             $fix_egyseg = $kulcsok[array_rand($kulcsok)];
@@ -277,9 +249,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
                 ];
             }
         }
-        // ----------------------------------------------------------------
-        // 2. NEHEZÍTETT MÓD
-        // ----------------------------------------------------------------
         elseif ($nehezebb) {
             $tenyezo_szam_bal = random_int(3, 4);
             $elemek_bal = [];
@@ -386,9 +355,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
             }
 
         }
-        // ----------------------------------------------------------------
-        // 3. NORMÁL MÓD (2 Tényezős, vegyes)
-        // ----------------------------------------------------------------
         else {
             $vezer_kulcsok = array_keys($aktiv_egysegek);
             $vezer_egyseg = $vezer_kulcsok[array_rand($vezer_kulcsok)];
@@ -440,7 +406,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
         }
     }
 
-    // HTML Renderelés
     $half = ceil(count($oldal_feladatai) / 2);
     $columns = array_chunk($oldal_feladatai, $half);
 
@@ -450,12 +415,10 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
         
         foreach ($columnTasks as $f) {
             $html .= '<div class="problem-row d-flex align-items-center justify-content-center">';
-            
-            // Kisebb betűméret a nehéz feladatoknak
             $fontSize = (strpos($f['mode'], 'hard') !== false) ? '0.9rem' : '1.1rem';
+            
             $html .= '<div class="problem d-flex align-items-center flex-wrap justify-content-center gap-2" style="font-size: '.$fontSize.';">'; 
             
-            // --- SZUPER KÖNNYŰ ---
             if ($f['mode'] === 'se_relacio') {
                 $html .= "<span>{$f['A']} {$f['egyseg']}</span>";
                 $html .= '<input type="text" class="answer-box mx-2" style="width: 40px;" data-correct="' . $f['sol'] . '">';
@@ -466,7 +429,6 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
                 $html .= '<input type="number" class="answer-box mx-2" data-correct="' . $f['sol'] . '">';
                 $html .= "<span>{$f['egyseg']}</span>";
             }
-            // --- NORMÁL ---
             elseif ($f['mode'] === 'norm_relacio') {
                 $html .= "<span>{$f['A']['ertek']} {$f['A']['egyseg']}</span>";
                 $html .= '<input type="text" class="answer-box mx-2" style="width: 40px;" data-correct="' . $f['sol'] . '">';
@@ -477,17 +439,12 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
                 $html .= '<input type="number" class="answer-box mx-2" data-correct="' . $f['sol'] . '">';
                 $html .= "<span>{$f['cel_egyseg']}</span>";
             }
-            // --- NEHEZÍTETT ---
             elseif ($f['mode'] === 'hard_relacio') {
-                // Bal oldal
                 foreach($f['bal'] as $idx => $elem) {
                     if ($idx > 0) $html .= " {$elem['op']} ";
                     $html .= "{$elem['adat']['ertek']}{$elem['adat']['egyseg']}";
                 }
-                
                 $html .= '<input type="text" class="answer-box mx-2" style="width: 40px;" data-correct="' . $f['sol'] . '">';
-                
-                // Jobb oldal
                 foreach($f['jobb'] as $idx => $elem) {
                     if ($idx > 0) $html .= " {$elem['op']} ";
                     $html .= "{$elem['adat']['ertek']}{$elem['adat']['egyseg']}";
@@ -510,5 +467,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     $html .= '</div>';
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 20. 16:55:00 */

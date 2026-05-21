@@ -3,6 +3,7 @@
  * Fájl: feladatok/osszeadas.php
  * Funkció: Több tényezős összeadás feladatok generálása és HTML kimenet előállítása.
  * Módosítás: Szuper könnyű mód (helyiérték bontás) implementálása.
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- BEMENETEK ---
@@ -146,5 +147,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
     // Hozzáadjuk a kész HTML-t a fő tömbhöz
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 10. 18:39:00 */

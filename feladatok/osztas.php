@@ -2,6 +2,7 @@
 /*
  * Fájl: feladatok/osztas.php
  * Funkció: Maradékos osztás feladatok generálása és HTML kimenet előállítása.
+ * Utolsó módosítás: 2026. május 07. 16:45:00
  */
 
 // --- HTML BEÁLLÍTÁSOK GENERÁLÁSA ---
@@ -69,5 +70,3 @@ for ($p = 0; $p < $oldalak_szama; $p++) {
 
     $feladat_oldalak[] = $html;
 }
-
-/* Utolsó módosítás: 2026. január 10. 22:12:00 */
