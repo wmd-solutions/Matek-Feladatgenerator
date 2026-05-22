@@ -67,6 +67,22 @@ function render_mini_preview($type) {
                 </svg>
             </div>';
             break;
+        case 'blokkprogram':
+            $preview = '
+            <div class="mini-preview" style="font-size:0.8rem;">
+                <div style="display:grid;grid-template-columns:repeat(3,16px);gap:2px;width:52px;margin:0 auto;">
+                    <div style="background:#198754;border-radius:2px;height:16px;"></div>
+                    <div style="background:#e9ecef;border-radius:2px;height:16px;"></div>
+                    <div style="background:#495057;border-radius:2px;height:16px;"></div>
+                    <div style="background:#495057;border-radius:2px;height:16px;"></div>
+                    <div style="background:#e9ecef;border-radius:2px;height:16px;display:flex;align-items:center;justify-content:center;font-size:6px;">🤖</div>
+                    <div style="background:#495057;border-radius:2px;height:16px;"></div>
+                    <div style="background:#495057;border-radius:2px;height:16px;"></div>
+                    <div style="background:#e9ecef;border-radius:2px;height:16px;"></div>
+                    <div style="background:#ffc107;border-radius:2px;height:16px;"></div>
+                </div>
+            </div>';
+            break;
         case 'labirintus':
         case 'labirintus_b':
         case 'labirintus_c':

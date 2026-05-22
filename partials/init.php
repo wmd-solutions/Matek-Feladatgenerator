@@ -25,7 +25,8 @@ $engedelyezett_feladatok = [
     'labirintus_b'    => 'Labirintus (Igaz/Hamis)',
     'labirintus_c'    => 'Labirintus (Akkumulátor)',
     'keresztrejtveny' => 'Matek Keresztrejtvény',
-    'ora'             => 'Óra gyakorlás'
+    'ora'             => 'Óra gyakorlás',
+    'blokkprogram'    => 'Blokkprogramozás'
 ];
 
 if ($aktualis_feladat !== 'dashboard' && !array_key_exists($aktualis_feladat, $engedelyezett_feladatok)) {
@@ -48,6 +49,7 @@ $funkcio_tamogatas = [
     'labirintus_c'    => ['nehezebb' => true,  'szuper_konnyu' => true],
     'keresztrejtveny' => ['nehezebb' => true,  'szuper_konnyu' => true],
     'ora'             => ['nehezebb' => true,  'szuper_konnyu' => true],
+    'blokkprogram'    => ['nehezebb' => true,  'szuper_konnyu' => true],
 ];
 
 $tamogatja_nehezebb = false;
